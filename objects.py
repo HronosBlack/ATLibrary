@@ -1,6 +1,6 @@
 class ATObject(object):
     """
-    Класс обего представления объектв онлайн библиотеки Author.Today
+    Класс общего представления объектов онлайн библиотеки Author.Today
     """
     
     _NAME_: str
@@ -52,6 +52,9 @@ class ATObject(object):
     
     
 class Author(ATObject):
+    """
+    Класс представления автора произведения оналйн библиотеки Author.Today
+    """
     
     def __init__(self, name: str = "", key: str = "") -> None:
         super().__init__(name, key)
@@ -59,6 +62,9 @@ class Author(ATObject):
         
         
 class Series(ATObject):
+    """
+    Класс представления серии произведений онлайн библиотеки AuthorToday
+    """
     
     def __init__(self, name: str = "", key: str = "") -> None:
         super().__init__(name, key)
