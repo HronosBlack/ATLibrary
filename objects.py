@@ -49,3 +49,10 @@ class ATObject(object):
     @property
     def UrlQuery(self) -> str:
         return f"{self.UrlPrefix}={self.UrlKey}"
+    
+    
+class Author(ATObject):
+    
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "author"
