@@ -56,3 +56,10 @@ class Author(ATObject):
     def __init__(self, name: str = "", key: str = "") -> None:
         super().__init__(name, key)
         self.UrlPrefix = "author"
+        
+        
+class Series(ATObject):
+    
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "series"
