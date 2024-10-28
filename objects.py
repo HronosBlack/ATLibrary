@@ -8,6 +8,12 @@ class ATObject(object):
     _URL_PREFIX_: str
     
     def __init__(self, name: str = "", key: str = "") -> None:
+        """Инициализатор объекта класса
+
+        Args:
+            name (str, не обязателен): Наименование объекта. По умолчанию "".
+            key (str, не обязателен): URL ключ объекта для запроса. По умолчанию "".
+        """
         self.Name = name
         self.UrlKey = key
         self.UrlPreix = ""
@@ -40,7 +46,7 @@ class ATObject(object):
         return self.Name
     
     def __eq__(self, value: object) -> bool:
-        if type(value) != 'ATObject':
+        if type(value) != type(self):
             return False
         return ((self.Name == value.Name) and 
                 (self.UrlKey == value.UrlKey) and
@@ -60,6 +66,11 @@ class Author(ATObject):
         super().__init__(name, key)
         self.UrlPrefix = "author"
         
+    def __eq__(self, value: object) -> bool:
+        if type(value) != type(self):
+            return False
+        return super().__eq__(value)
+        
         
 class Series(ATObject):
     """
@@ -69,3 +80,34 @@ class Series(ATObject):
     def __init__(self, name: str = "", key: str = "") -> None:
         super().__init__(name, key)
         self.UrlPrefix = "series"
+        
+    def __eq__(self, value: object) -> bool:
+        if type(value) != type(self):
+            return False
+        return super().__eq__(value)
+
+
+class Genre(ATObject):
+    """
+    Класс представления жанра произведения онлайн библиотеки Author.Today
+    """
+    
+    _CHILDS_: list['Genre'] = None
+    
+    def __init__(self, name: str = "", key: str = "", childs: list['Genre'] = None) -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "genre"
+        self.Childs = childs
+    
+    @property
+    def Childs(self) -> list['Genre']:
+        return self._CHILDS_
+    
+    @Childs.setter
+    def Childs(self, value: list['Genre']) -> None:
+        self._CHILDS_ = value
+        
+    def __eq__(self, value: object) -> bool:
+        if type(value) != type(self):
+            return False
+        return super().__eq__(value) and (self.Childs == value.Childs)
