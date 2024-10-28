@@ -88,13 +88,14 @@ class Genre(ATObject):
     Класс представления жанра произведения онлайн библиотеки Author.Today
     """
     
-    def __init__(self, name: str = "", key: str = "", childs: list['Genre'] = None) -> None:
+    def __init__(self, name: str = "", key: str = "", id: int | None = None, childs: list['Genre'] = None) -> None:
         super().__init__(name, key)
         self.UrlPrefix = "genre"
         if childs:
             self.__CHILDS: list['Genre'] = childs
         else:
             self.__CHILDS: list['Genre'] = []
+        self.__ID: int | None = id
     
     @property
     def Childs(self) -> list['Genre']:
@@ -104,6 +105,14 @@ class Genre(ATObject):
     def Childs(self, value: list['Genre']) -> None:
         self.__CHILDS = value
         
+    @property
+    def Id(self) -> int:
+        return self.__ID
+    
+    @Id.setter
+    def Id(self, value: int) -> None:
+        self.__ID = value
+        
     def AddChild(self, value: 'Genre') -> None:
         self.Childs.append(value)
         
@@ -111,4 +120,26 @@ class Genre(ATObject):
         if type(value) != type(self):
             return False
         return super().__eq__(value) and (self.Childs == value.Childs)
+
+class Book(ATObject):
+    """
+    Класс представление произведения онлайн библиотеки Author.Today
+    """
+    
+    def __init__(self, name: str = "", key: str = "", authors: list[Author] | Author = None, genres: list[Genre] = None, series: Series = None) -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "work"
+        
+        if genres:
+            self.__GENRES: list[Genre] = genres
+        else:
+            self.__GENRES: list[Genre] = []
+        
+        if authors:
+            if type(authors) == Author:
+                self.__AUTHORS: list[Author] = [authors, ]
+            else:
+                self.__AUTHORS: list[Author] = authors
+        else:
+            self.__AUTHORS: list[Author] = []
         
