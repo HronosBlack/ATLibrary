@@ -1,6 +1,6 @@
 import requests
 
-from objects import Genre
+from objects import Genre, Access
 
 
 class AT:
@@ -15,6 +15,7 @@ class AT:
             "x-requested-with": "XMLHttpRequest"
         }
         self.__GENRES: list[Genre] = []
+        self.__ACCESSES: list[Access] = []
     
     def Login(self, user_login: str, user_password: str) -> dict:
         data = {
@@ -31,26 +32,26 @@ class AT:
         if "token" in response:
             self.__TOKEN = response["token"]
             self.__HEADERS["authorization"] = f"Bearer {self.__TOKEN}"
-            self.__USER_ID = self.GetAccountInfo()["id"]
+            self.__USER_ID = self.__GetAccountInfo__()["id"]
         
         return response
     
     def LoginWithToken(self, token: str) -> dict:
         self.__TOKEN = token
         self.__HEADERS["authorization"] = f"Bearer {self.__TOKEN}"
-        response = self.GetAccountInfo()
+        response = self.__GetAccountInfo__()
         if "id" in response:
             self.__USER_ID = response["id"]
         return response
     
-    def GetAccountInfo(self) -> dict:
+    def __GetAccountInfo__(self) -> dict:
         return requests.get(
             f"{self.__API}/v1/account/current-user",
             headers=self.__HEADERS,
             verify=False
         ).json()
         
-    def RefreshToken(self) -> dict:
+    def __RefreshToken__(self) -> dict:
         return requests.post(
             f"{self.__API}/v1/account/refresh-token",
             headers=self.__HEADERS,
@@ -71,7 +72,7 @@ class AT:
             
             parent_genre = None
             if genre["parentId"] != None:
-                parent_genre = self.__FindGenreInAll(genre["parentId"])
+                parent_genre = self.__FindGenreInAll__(genre["parentId"])
             
             if parent_genre != None:
                 parent_genre.Childs.append(Genre(genre_name, genre_key, genre_id))
@@ -86,7 +87,7 @@ class AT:
             self.__GetAllGenres__()
         return self.__GENRES
     
-    def __FindGenreInAll(self, genre_id: str | int, all_genre: list[Genre] = None) -> Genre | None:
+    def __FindGenreInAll__(self, genre_id: str | int, all_genre: list[Genre] = None) -> Genre | None:
         if all_genre == None:
             all_genre = self.__GENRES
             
@@ -99,8 +100,22 @@ class AT:
                 return genre
             else:
                 if len(genre.Childs) > 0:
-                    child = self.__FindGenreInAll(genre_id, genre.Childs)
+                    child = self.__FindGenreInAll__(genre_id, genre.Childs)
                     if child:
                         return child
         
         return None
+    
+    @property
+    def AllAccesses(self) -> list[Access]:
+        accesses = requests.get(
+            f"{self.__API}/v1/catalog/accesses",
+            headers=self.__HEADERS,
+            verify=False
+        ).json()
+        
+        self.__ACCESSES = []
+        for access in accesses:
+            self.__ACCESSES.append(Access(access["title"], access["value"]))
+        
+        return self.__ACCESSES

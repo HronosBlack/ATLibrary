@@ -121,12 +121,34 @@ class Genre(ATObject):
             return False
         return super().__eq__(value) and (self.Childs == value.Childs)
 
+
+class Access(ATObject):
+    """
+    Класс представления доступа к произведениям онлайн библиотеки Author.Today
+    """
+    
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "access"
+        
+    def __eq__(self, value: object) -> bool:
+        if type(value) != type(self):
+            return False
+        return super().__eq__(value)
+
+
 class Book(ATObject):
     """
     Класс представление произведения онлайн библиотеки Author.Today
     """
     
-    def __init__(self, name: str = "", key: str = "", authors: list[Author] | Author = None, genres: list[Genre] = None, series: Series = None) -> None:
+    def __init__(self,
+                 name: str = "", 
+                 key: str = "", 
+                 authors: list[Author] | Author = None, 
+                 genres: list[Genre] = None, 
+                 series: Series = None,
+                 access: Access = None) -> None:
         super().__init__(name, key)
         self.UrlPrefix = "work"
         
@@ -142,4 +164,7 @@ class Book(ATObject):
                 self.__AUTHORS: list[Author] = authors
         else:
             self.__AUTHORS: list[Author] = []
+            
+        self.__SERIES = series
+        self.__ACCESS = access
         
