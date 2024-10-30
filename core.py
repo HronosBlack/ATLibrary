@@ -1,6 +1,6 @@
 import requests
 
-from objects import Genre, Access
+from ATLibrary.objects import Genre, Access
 
 
 class AT:
