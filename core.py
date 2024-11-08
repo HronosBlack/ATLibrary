@@ -125,5 +125,5 @@ class AT:
             f"{self.__API}/v1/work/330173/meta-info",
             headers=self.__HEADERS,
             verify=False
-        ).json
+        ).json()
         return answer
