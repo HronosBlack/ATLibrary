@@ -119,3 +119,11 @@ class AT:
             self.__ACCESSES.append(Access(access["title"], access["value"]))
         
         return self.__ACCESSES
+
+    def sample(self) -> dict:
+        answer = requests.get(
+            f"{self.__API}/v1/work/330173/meta-info",
+            headers=self.__HEADERS,
+            verify=False
+        ).json
+        return answer
