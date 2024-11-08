@@ -135,6 +135,36 @@ class Access(ATObject):
         if type(value) != type(self):
             return False
         return super().__eq__(value)
+    
+
+class Format(ATObject):
+    
+    self = super()
+    
+    @property
+    def EBook(self) -> 'Format':
+        self.Name = "Электронная книга"
+        self.UrlKey = "ebook"
+        self.UrlPrefix = "format"
+        return self
+    
+    @property
+    def AudioBook(self) -> 'Format':
+        self.Name = "Аудиокнига"
+        self.UrlKey = "audiobook"
+        self.UrlPrefix = "format"
+        return self
+    
+    @property
+    def Any(self) -> 'Format':
+        self.Name = "Любой формат"
+        self.UrlKey = "any"
+        self.UrlPrefix = "format"
+        return self
+    
+    @property
+    def AllFormat(self) -> list['Format']:
+        return [self.Any, self.EBook, self.AudioBook]
 
 
 class Book(ATObject):

@@ -1,6 +1,6 @@
 import requests
 
-from ATLibrary.objects import Genre, Access
+from ATLibrary.objects import Genre, Access, Format
 
 
 class AT:
@@ -127,3 +127,7 @@ class AT:
             verify=False
         ).json()
         return answer
+    
+    @property
+    def AllFormat(self) -> list[Format]:
+        return Format.AllFormat
