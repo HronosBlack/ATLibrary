@@ -139,32 +139,16 @@ class Access(ATObject):
 
 class Format(ATObject):
     
-    self = super()
-    
-    @property
-    def EBook(self) -> 'Format':
-        self.Name = "Электронная книга"
-        self.UrlKey = "ebook"
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
         self.UrlPrefix = "format"
-        return self
+        
+        
+class WorkForm(ATObject):
     
-    @property
-    def AudioBook(self) -> 'Format':
-        self.Name = "Аудиокнига"
-        self.UrlKey = "audiobook"
-        self.UrlPrefix = "format"
-        return self
-    
-    @property
-    def Any(self) -> 'Format':
-        self.Name = "Любой формат"
-        self.UrlKey = "any"
-        self.UrlPrefix = "format"
-        return self
-    
-    @property
-    def AllFormat(self) -> list['Format']:
-        return [self.Any, self.EBook, self.AudioBook]
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "form"
 
 
 class Book(ATObject):

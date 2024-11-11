@@ -1,6 +1,6 @@
 import requests
 
-from ATLibrary.objects import Genre, Access, Format
+from ATLibrary.objects import Genre, Access, Format, WorkForm
 
 
 class AT:
@@ -16,6 +16,7 @@ class AT:
         }
         self.__GENRES: list[Genre] = []
         self.__ACCESSES: list[Access] = []
+        self.__WORKFORMS: list[WorkForm] = []
     
     def Login(self, user_login: str, user_password: str) -> dict:
         data = {
@@ -122,7 +123,7 @@ class AT:
 
     def sample(self) -> dict:
         answer = requests.get(
-            f"{self.__API}/v1/work/330173/meta-info",
+            f"{self.__API}/v1/catalog/work-forms",
             headers=self.__HEADERS,
             verify=False
         ).json()
@@ -130,4 +131,22 @@ class AT:
     
     @property
     def AllFormat(self) -> list[Format]:
-        return Format.AllFormat
+        allFormat: list[Format] = []
+        allFormat.append(Format("Любой формат", "any"))
+        allFormat.append(Format("Электронная книга", "ebook"))
+        allFormat.append(Format("Аудиокнига", "audiobook"))
+        return allFormat
+    
+    @property
+    def AllWorkForms(self) -> list[WorkForm]:
+        workforms = requests.get(
+            f"{self.__API}/v1/catalog/work-forms",
+            headers=self.__HEADERS,
+            verify=False
+        ).json()
+        
+        self.__WORKFORMS = []
+        for workform in workforms:
+            self.__WORKFORMS.append(WorkForm(workform['title'], workform['value']))
+        
+        return self.__WORKFORMS
