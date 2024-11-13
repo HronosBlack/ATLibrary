@@ -1,6 +1,6 @@
 import requests
 
-from ATLibrary.objects import Genre, Access, Format, WorkForm
+from ATLibrary.objects import Genre, Access, Format, WorkForm, State
 
 
 class AT:
@@ -17,6 +17,7 @@ class AT:
         self.__GENRES: list[Genre] = []
         self.__ACCESSES: list[Access] = []
         self.__WORKFORMS: list[WorkForm] = []
+        self.__STATES: list[State] = []
     
     def Login(self, user_login: str, user_password: str) -> dict:
         data = {
@@ -123,7 +124,7 @@ class AT:
 
     def sample(self) -> dict:
         answer = requests.get(
-            f"{self.__API}/v1/catalog/work-forms",
+            f"{self.__API}/v1/catalog/work-states",
             headers=self.__HEADERS,
             verify=False
         ).json()
@@ -150,3 +151,17 @@ class AT:
             self.__WORKFORMS.append(WorkForm(workform['title'], workform['value']))
         
         return self.__WORKFORMS
+    
+    @property
+    def AllStates(self) -> list[State]:
+        workStates = requests.get(
+            f"{self.__API}/v1/catalog/work-states",
+            headers=self.__HEADERS,
+            verify=False
+        ).json()
+        
+        self.__STATES = []
+        for state in workStates:
+            self.__STATES.append(State(state['title'], state['value']))
+            
+        return self.__STATES

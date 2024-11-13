@@ -149,6 +149,13 @@ class WorkForm(ATObject):
     def __init__(self, name: str = "", key: str = "") -> None:
         super().__init__(name, key)
         self.UrlPrefix = "form"
+        
+
+class State(ATObject):
+    
+    def __init__(self, name: str = "", key: str = "") -> None:
+        super().__init__(name, key)
+        self.UrlPrefix = "state"
 
 
 class Book(ATObject):
